@@ -9,6 +9,7 @@ type PositionResult = Position | { selector: string; offset?: Position } | void;
 export interface VueRouterInvokeWebpackPluginOptions {
   dir: string;
   alias: string;
+  base?: string;
   notFound?: string;
   mode?: mode;
   meta?: string;

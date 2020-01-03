@@ -25,9 +25,10 @@ const routeStringPreJs = modules =>
   `import Vue from 'vue';import Router from 'vue-router';${modules};Vue.use(Router);export const routes = [`;
 const routeStringPreTs = modules =>
   `import Vue from 'vue';import Router, { RouteConfig } from 'vue-router';${modules};Vue.use(Router);export const routes: RouteConfig[] = [`;
-const routeStringPostFn = (mode, behavior) =>
-  `];const router = new Router({mode: '${mode}',routes,${behavior &&
-    'scrollBehavior:' + behavior}});`;
+const routeStringPostFn = (mode, behavior, base) =>
+  `];const router = new Router({mode: '${mode}'${
+    base ? ',base:' + base : ''
+  },routes,${behavior && 'scrollBehavior:' + behavior}});`;
 const routeStringExport = 'export default router;';
 
 const modeMap = makeMap('hash,history');
@@ -84,7 +85,7 @@ function init(options) {
     language === 'javascript'
       ? routeStringPreJs(modules)
       : routeStringPreTs(modules);
-  this.routeStringPost = routeStringPostFn(mode, behavior);
+  this.routeStringPost = routeStringPostFn(mode, behavior, options.base);
   this.routeStringExport = routeStringExport;
   this.alias = options.alias;
   this.dir = options.dir;
